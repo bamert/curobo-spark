@@ -1,0 +1,27 @@
+[project]
+name = "curobo-spark-poc"
+version = "0.1.0"
+description = "cuRobo proof of concept on DGX Spark (aarch64, CUDA 13)"
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.9",
+  "pytest>=8",
+  "numpy>=2.2.6",
+  "tqdm>=4.67.1",
+  "nvidia-curobo[cu13-torch]",
+]
+
+[tool.uv]
+package = false
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cu130", marker = "sys_platform == 'linux' and platform_machine == 'aarch64'" },
+]
+# Pinned to the commit verified on DGX Spark (2026-10-24). uv fetches it on `uv sync`.
+nvidia-curobo = { git = "https://github.com/NVlabs/curobo", rev = "78fd485fa82d9b9a063fb4985e371814587e666a" }
